@@ -49,11 +49,11 @@
         function divide(a,b){
             return a/b;
         }
-        let term1 = null, oper = null, term2 = 0, operPressed = false, decimal = false;
+        let term1 = "", oper = null, term2 = "", operPressed = false, equalPressed = false, sigfigs = 1;
         function operate(term1, oper, term2){
             switch(oper){
                 case "+":
-                    return add(term1, term2);
+                    return add(parseFloat(term1), parseFloat(term2));
                 case "-":
                     return subtract(term1,term2);
                 case "*":
@@ -65,37 +65,58 @@
         const digits = document.querySelectorAll(".digits button");
         digits.forEach(item =>{
             item.addEventListener("click", () => {
+                if (equalPressed === true){
+                    oper = null;
+                    operPressed = false;
+                    term1 = "";
+                    term2 = "";
+                    sigfigs = 1;
+                    equalPressed = false;
+                }
                 if (operPressed === false){
-                    term1 = parseInt(10*term1+parseInt(item.textContent));
+                    term1+=item.textContent;
                 }else{
-                    term2 = parseInt(10*term2+parseInt(item.textContent));
-                    term1 = operate(term1, oper, term2);
+                    term2 += item.textContent;
                 }
             })
         })
         const operators = document.querySelectorAll(".operators button");
         operators.forEach(item =>{
             item.addEventListener("click", ()=>{
-                operPressed = true;
+                if (equalPressed = true){
+                    equalPressed = false;
+                }
                 oper = item.textContent;
+                if(operPressed === true){
+                    term1 = operate(parseFloat(term1), oper, parseFloat(term2));
+                }
+                operPressed = true;
+                term2 = "";
                 console.log(term1);
             })
         })
         const equal = document.querySelector(".equals");
         equal.addEventListener("click", ()=>{
+            equalPressed = true;
+            term1 = operate(parseFloat(term1), oper, parseFloat(term2));
+            term2 = "";
             console.log(term1);
         })
         const AC = document.querySelector(".clear");
         AC.addEventListener("click", ()=>{
             operPressed = false;
-            pressing = true;
+            equalPressed = false;
             oper = null;
-            term1 = null;
-            term2 = null;
+            term1 = "";
+            term2 = "";
         })
         const deci = document.querySelector(".decimal");
         deci.addEventListener("click", ()=>{
-            decimal = true;
+            if(operPressed === false){
+                term1 += ".";
+            }else{
+                term2 += ".";
+            }
         })            
     </script>
 </body>
