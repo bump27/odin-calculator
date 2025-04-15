@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel = "stylesheet" href = "styles.css"> -->
+</head>
+<body>
+    <div class = "buttons">
+        <div class = "operators">
+            <button>+</button>
+            <button>-</button>
+            <button>*</button>
+            <button>/</button>
+        </div>
+        <div class = "digits">
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>4</button>
+            <button>5</button>
+            <button>6</button>
+            <button>7</button>
+            <button>8</button>
+            <button>9</button>
+            <button>0</button>
+        </div>
+        <div class = "equals">
+            <button>=</button>
+        </div>
+        <div class = "clear">
+            <button>AC</button>
+        </div>
+        <div class = "decimal">
+            <button>.</button>
+        </div>
+    </div>
+    <script>
+        function add(a,b){
+            return a+b;
+        }
+        function subtract(a,b){
+            return a-b;
+        }
+        function multiply(a,b){
+            return a*b;
+        }
+        function divide(a,b){
+            return a/b;
+        }
+        let term1 = null, oper = null, term2 = 0, operPressed = false, decimal = false;
+        function operate(term1, oper, term2){
+            switch(oper){
+                case "+":
+                    return add(term1, term2);
+                case "-":
+                    return subtract(term1,term2);
+                case "*":
+                    return multiply(term1, term2);
+                case "/":
+                    return divide(term1, term2);
+            }
+        }
+        const digits = document.querySelectorAll(".digits button");
+        digits.forEach(item =>{
+            item.addEventListener("click", () => {
+                if (operPressed === false){
+                    term1 = parseInt(10*term1+parseInt(item.textContent));
+                }else{
+                    term2 = parseInt(10*term2+parseInt(item.textContent));
+                    term1 = operate(term1, oper, term2);
+                }
+            })
+        })
+        const operators = document.querySelectorAll(".operators button");
+        operators.forEach(item =>{
+            item.addEventListener("click", ()=>{
+                operPressed = true;
+                oper = item.textContent;
+                console.log(term1);
+            })
+        })
+        const equal = document.querySelector(".equals");
+        equal.addEventListener("click", ()=>{
+            console.log(term1);
+        })
+        const AC = document.querySelector(".clear");
+        AC.addEventListener("click", ()=>{
+            operPressed = false;
+            pressing = true;
+            oper = null;
+            term1 = null;
+            term2 = null;
+        })
+        const deci = document.querySelector(".decimal");
+        deci.addEventListener("click", ()=>{
+            decimal = true;
+        })            
+    </script>
+</body>
+</html>
