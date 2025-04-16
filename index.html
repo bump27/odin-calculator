@@ -8,7 +8,9 @@
 </head>
 <body>
     <div class = "display">
-        <div class = "screen"></div>
+        <div class = "screen">
+            
+        </div>
     </div>
     <div class = "buttons">
         <div class = "clear">
@@ -54,7 +56,7 @@
         function divide(a,b){
             return a/b;
         }
-        let term1 = "", oper = null, term2 = "", operPressed = false, equalPressed = false, sigfigs = 1;
+        let term1 = "", oper = null, term2 = "", operPressed = false, equalPressed = false;
         function operate(term1, oper, term2){
             switch(oper){
                 case "+":
@@ -67,37 +69,49 @@
                     return divide(term1, term2);
             }
         }
+        const screen = document.querySelector(".screen");
         const digits = document.querySelectorAll(".digits button");
         digits.forEach(item =>{
             item.addEventListener("click", () => {
+                if (item.textContent === "."){
+                    return;
+                }
                 if (equalPressed === true){
                     oper = null;
                     operPressed = false;
                     term1 = "";
                     term2 = "";
-                    sigfigs = 1;
                     equalPressed = false;
                 }
                 if (operPressed === false){
-                    term1+=item.textContent;
+                    if(term1.length <= 22){
+                        term1+=item.textContent;
+                        screen.textContent = term1;
+                    }
                 }else{
-                    term2 += item.textContent;
+                    if (term2.length <= 22){
+                        term2 += item.textContent;
+                        screen.textContent = term2;
+                    }
                 }
             })
         })
         const operators = document.querySelectorAll(".operators button");
         operators.forEach(item =>{
             item.addEventListener("click", ()=>{
-                if (equalPressed = true){
+                if (equalPressed === true){
                     equalPressed = false;
                 }
-                oper = item.textContent;
+                if (term2 === "" && operPressed === true){
+                    return;
+                }
                 if(operPressed === true){
                     term1 = operate(parseFloat(term1), oper, parseFloat(term2));
+                    term2 = "";
                 }
+                oper = item.textContent;
                 operPressed = true;
-                term2 = "";
-                console.log(term1);
+                screen.textContent = term1;
             })
         })
         const equal = document.querySelector(".equals");
@@ -105,7 +119,17 @@
             equalPressed = true;
             term1 = operate(parseFloat(term1), oper, parseFloat(term2));
             term2 = "";
-            console.log(term1);
+            if(String(term1).length <= 22){
+                screen.textContent = term1;
+            }else{
+                let n = String(term1);
+                term1 = "";
+                for(let i = 0; i < 22; i++){
+                    term1 += n[i];
+                }
+                screen.textContent = term1;
+                term1 = parseFloat(term1);
+            }
         })
         const AC = document.querySelector(".clear");
         AC.addEventListener("click", ()=>{
@@ -114,13 +138,20 @@
             oper = null;
             term1 = "";
             term2 = "";
+            screen.textContent = "";
         })
-        const deci = document.querySelector(".decimal");
+        const deci = document.querySelector(".decimal button");
         deci.addEventListener("click", ()=>{
             if(operPressed === false){
-                term1 += ".";
+                if(String(term1).includes(".") === false){
+                    term1 += ".";
+                }
+                screen.textContent = term1;
             }else{
-                term2 += ".";
+                if(String(term2).includes(".") === false){
+                    term2 += ".";
+                }
+                screen.textContent = term2;
             }
         })            
     </script>

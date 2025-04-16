@@ -73,3 +73,11 @@ body{
         height: 50px;
     }
 }
+.screen{
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    padding-right: 20px;
+    font-size: 30px;
+    color: white;
+}
