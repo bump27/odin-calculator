@@ -112,6 +112,10 @@
                 oper = item.textContent;
                 operPressed = true;
                 screen.textContent = term1;
+                if (isFinite(term1) === false){
+                    screen.textContent = "😔";
+                    return;
+                }            
             })
         })
         const equal = document.querySelector(".equals");
@@ -119,6 +123,10 @@
             equalPressed = true;
             term1 = operate(parseFloat(term1), oper, parseFloat(term2));
             term2 = "";
+            if (isFinite(term1) === false){
+                screen.textContent = "😔";
+                return;
+            }            
             if(String(term1).length <= 22){
                 screen.textContent = term1;
             }else{
@@ -153,7 +161,7 @@
                 }
                 screen.textContent = term2;
             }
-        })            
+        })
     </script>
 </body>
 </html>
